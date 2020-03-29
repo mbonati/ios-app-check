@@ -20,13 +20,6 @@ const args = arg({
     '-v':        '--verbose',
     '-f':        '--file',
 });
- 
-//console.log(args);
-
-
-//const currentAppPath = '/Users/marcobonati/Library/Developer/Xcode/DerivedData/ViperaAppV2-duxoqjquhsuedraqvmwgxmvoxbow/Build/Products/Release-iphoneos/e-paiement.app';
-
-
 
 const tableHeader = [
     {
