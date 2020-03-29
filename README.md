@@ -5,7 +5,7 @@ With this tool you are able to verify the architectures supported by a compiled 
 
 ## Usage 
 
-# Presrequisites
+# Prerequisites
 This tool uses the Xcode *lipo* command. For this you must have installed Xcode and the command lines tools to be able to use it.
 
 # Installation
