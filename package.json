@@ -1,0 +1,25 @@
+{
+  "name": "ios-app-check",
+  "version": "1.0.0",
+  "description": "iOS App Checker for App Store",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "ios-app-check": "bin/ios-app-check"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "arg": "^4.1.3",
+    "esm": "^3.2.25",
+    "inquirer": "^7.1.0",
+    "install": "^0.13.0",
+    "lodash": "^4.17.15",
+    "npm": "^6.14.4",
+    "path": "^0.12.7",
+    "tty-table": "^4.1.1"
+  }
+}
