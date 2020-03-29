@@ -3,7 +3,7 @@ iOA Application Checker
 
 With this tool you are able to verify the architectures supported by a compiled ios mobile app, and to verify all the supported architectures of the dynamic and framework libraries used and exported by it.
 
-## Usage 
+
 
 # Prerequisites
 This tool uses the Xcode *lipo* command. For this you must have installed Xcode and the command lines tools to be able to use it.
@@ -11,7 +11,7 @@ This tool uses the Xcode *lipo* command. For this you must have installed Xcode 
 # Installation
 npm install -g ios-app-check
 
-# Run
+# Usage
 
 Tu run the checker you need to run in terminal:
 
