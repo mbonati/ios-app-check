@@ -179,7 +179,7 @@ function getFrameworksArchitectures(appPath, verbose, callback) {
                             wrongArchsLibs.push(item);
                         }
                     }
-                    const symbols = ['TSKReportsRateLimiter', 'UIImagePickerController', 'PHPhotoLibrary', 'PHAsset', 'PHAssetCollection', 'PHCollection', 'PHCollectionList'];
+                    const symbols = [ 'UIImagePickerController', 'PHPhotoLibrary', 'PHAsset', 'PHAssetCollection', 'PHCollection', 'PHCollectionList'];
                     findUsedSymbols(frameworkPath, symbols, verbose);
                 }
             }
@@ -265,6 +265,9 @@ function getFolderFiles(path, callback) {
 }
 
 function getBinaryArchitectures(frameworkPath, verbose) {
+
+    const symbols = ['UIImagePickerController', 'PHPhotoLibrary', 'PHAsset', 'PHAssetCollection', 'PHCollection', 'PHCollectionList'];
+    findUsedSymbols(frameworkPath, symbols, verbose);
 
     let results = execSync('lipo -info ' + frameworkPath).toString();
 
