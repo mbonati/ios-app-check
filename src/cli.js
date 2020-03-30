@@ -11,14 +11,14 @@ const pkg = require('../package.json');
 
 const args = arg({
     // Types
-    '--file':    String,
-    '--help':    Boolean,
+    '--file': String,
+    '--help': Boolean,
     '--version': Boolean,
     '--verbose': arg.COUNT,   // Counts the number of times --verbose is passed
- 
+
     // Aliases
-    '-v':        '--verbose',
-    '-f':        '--file',
+    '-v': '--verbose',
+    '-f': '--file',
 });
 
 const tableHeader = [
@@ -56,29 +56,29 @@ const tableHeader = [
     },
 ]
 
-const archList = [ 'i386', 'x86_64', 'armv7', 'armv7s', 'arm64', 'arm64e'];
+const archList = ['i386', 'x86_64', 'armv7', 'armv7s', 'arm64', 'arm64e'];
 
-export function cli(){
-    
+export function cli() {
+
     const filePath = args['--file'];
     const verbose = args['--verbose'];
 
-    if (args['--help']){
+    if (args['--help']) {
         console.log('' + pkg.name + ' version ' + pkg.version);
         return;
     }
 
-    if (args['--version']){
+    if (args['--version']) {
         console.log('' + pkg.name + ' version ' + pkg.version);
         return;
     }
 
-    if (!filePath){
+    if (!filePath) {
         console.log('The file parameter (--file) is required.');
         return;
     }
 
-    checkApp(filePath, verbose, res=>{
+    checkApp(filePath, verbose, res => {
 
     });
 
@@ -88,7 +88,7 @@ export function cli(){
 
 // });
 
-function checkApp(appPath, verbose, callback)  {
+function checkApp(appPath, verbose, callback) {
 
     const appArchs = getAppArchitectures(appPath, verbose);
     if (checkForWrongArchs(appArchs)) {
@@ -121,28 +121,28 @@ function checkApp(appPath, verbose, callback)  {
 
 function renderArchsTable(data) {
     const t3 = Table(tableHeader, [], {});
-    for (var i=0;i<data.length;i++){
-        addTableRow(data[i], t3);        
+    for (var i = 0; i < data.length; i++) {
+        addTableRow(data[i], t3);
     }
     return t3.render()
     return '';
 }
 
-function addTableRow(dataRow, table){
+function addTableRow(dataRow, table) {
 
-    let row = [ dataRow.framework ];
-    for (let i=0;i<archList.length;i++){
+    let row = [dataRow.framework];
+    for (let i = 0; i < archList.length; i++) {
         const n = _.find(dataRow.archs, el => {
             return (el === archList[i]);
         });
-        if (n){
+        if (n) {
             row.push('*');
         } else {
             row.push('');
         }
     }
 
-   table.push(row);
+    table.push(row);
 }
 
 function getAppArchitectures(appPath, verbose) {
@@ -179,6 +179,8 @@ function getFrameworksArchitectures(appPath, verbose, callback) {
                             wrongArchsLibs.push(item);
                         }
                     }
+                    const symbols = ['TSKReportsRateLimiter', 'UIImagePickerController', 'PHPhotoLibrary', 'PHAsset', 'PHAssetCollection', 'PHCollection', 'PHCollectionList'];
+                    findUsedSymbols(frameworkPath, symbols, verbose);
                 }
             }
             callback(null, libResults, wrongArchsLibs);
@@ -186,6 +188,36 @@ function getFrameworksArchitectures(appPath, verbose, callback) {
     });
 
 }
+
+function findUsedSymbols(frameworkPath, symbols, verbose) {
+
+    const frameworkName = path.basename(frameworkPath);
+    //console.log('findUsedSymbols for framework=' + frameworkName);
+    try {
+        const execCmd = 'nm ' + frameworkPath;
+        let results = execSync(execCmd).toString();
+        const resultData = { framework: frameworkName, symbols: [] };
+        for (let i = 0; i < symbols.length; i++) {
+            const find = results.search(symbols[i]);
+            if (find >= 0) {
+                resultData.symbols.push(symbols[i]);
+            }
+        }
+        if (resultData.symbols.length > 0) {
+            console.log('');
+            console.log('>>>>>> Find Symbols', resultData);
+            console.log('');
+            return resultData;
+        } else {
+            return null;
+        }
+    } catch (ex) {
+        //console.log('Error:', ex);
+        return null;
+    }
+
+}
+
 
 function checkForWrongArchs(data) {
     const n = _.find(data, el => {
@@ -236,8 +268,8 @@ function getBinaryArchitectures(frameworkPath, verbose) {
 
     let results = execSync('lipo -info ' + frameworkPath).toString();
 
-    if (verbose){
-        console.log('Binary ' + path.basename(frameworkPath)+ ': ' , results);
+    if (verbose) {
+        console.log('Binary ' + path.basename(frameworkPath) + ': ', results);
     }
 
     const n = results.search('are: ');
